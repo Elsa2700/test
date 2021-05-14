@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member</title>
+</head>
+<style>
+    body {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+    }
+
+    .header {
+        color: white;
+        background-color: #223344;
+        text-align: center;
+        font-weight: bold;
+        font-size: 38px;
+        width: 100%;
+        padding: 15px 0;
+    }
+
+    .container {
+        width: 100%;
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    a {
+        font-size: 20px;
+    }
+
+    input {
+        margin-left: 5px;
+        height: 20px;
+    }
+
+    button {
+        height: 27px;
+        display: inline-block;
+    }
+
+    .text {
+        margin: 10px;
+    }
+</style>
+<script type="text/javascript">
+    function getData() {
+        //開啟連線
+        let button = document.getElementById("buttonId");
+        function clickButton(e) {
+            e.preventDefault();
+            let username = document.getElementById("username").value;
+            url = "http://127.0.0.1:3000/api/users?username=" + username
+            async function queryName() {
+                await fetch(url)
+                    .then(result => {
+                        console.log(result);
+                        let text = document.querySelector("#query");
+                        let dataobj = result;
+                        text.textContent = dataobj.data["name"];
+                        text.className = "text";
+
+                    })
+                    .catch(error => {
+                        console.error("查詢失敗");
+                        let text = document.querySelector("#query")
+                        text.textContent = "查無資料";
+                        text.className = "text";
+                    })
+
+            }
+
+            queryName(url)
+
+        }
+        button.addEventListener("click", clickButton);
+
+
+        // 修改會員姓名
+
+        let updateBtn = document.getElementById("updateBtn");
+        function clickUpdateBtn(e) {
+            let newName = document.getElementById("updatename").value;
+            let data = { "updatename": newName };
+            let options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            };
+            e.preventDefault();
+
+
+            async function updateName() {
+                await fetch('/api/user', options)
+                    .then(res => {
+                        console.log(res);
+                        return res.json();
+                    })
+                    .then(result => {
+                        console.log(result);
+                        let text = document.querySelector("#update")
+                        text.textContent = "更新成功";
+                        text.className = "text";
+                        let updatetitle = document.querySelector("#updateTitle")
+                        updatetitle.textContent = data["updatename"] + "，成功登入系統"
+                    })
+                    .catch(error => {
+                        console.error("更新失敗");
+                        let text = document.querySelector("#update")
+                        text.textContent = "更新失敗";
+                        text.className = "text";
+                    })
+
+            }
+            updateName('/api/user', options)
+        }
+
+        updateBtn.addEventListener("click", clickUpdateBtn);
+
+    }
+
+</script>
+
+
+<body onload="getData()">
+    <div class="header">歡迎光臨，這是會員頁</div>
+
+    <div class="container">
+        <h2 id="updateTitle">{{name}}，成功登入系統</h2>
+        <a href="/signout">登出系統</a>
+        <br>
+        <h2>查詢會員姓名</h2>
+        <form action="/member" method="GET">
+            <div class="form"><input type="text" id="username">
+                <span><button id="buttonId">查詢</button></span>
+                <div id="query"></div>
+            </div>
+        </form>
+        <br>
+        <h2>更新我的姓名</h2>
+        <form action="/member" method="POST">
+            <div class="form"><input type="text" id="updatename">
+                <span><button id="updateBtn">更新</button></span>
+                <div id="update"></div>
+            </div>
+        </form>
+    </div>
+
+
+
+</body>
+
+</html>

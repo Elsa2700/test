@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+</head>
+<style>
+    body{
+        margin:0px;
+        padding: 0px;
+        box-sizing: border-box;
+    }
+    .header{
+        color:white;
+        background-color: #223344;
+        text-align: center;
+        font-weight: bold;
+        font-size: 38px;
+        width:100%;
+        padding: 15px 0;
+    }
+    .container{
+        text-align: center;
+        width:100%;
+        font-size: 20px;
+        margin:10px auto;
+        
+        
+    }
+    form{
+        margin:10px auto;
+        
+    }
+    form .form{
+        margin:10px;
+        display:inline-flex;
+    }
+
+    input{
+        margin-left: 5px;
+        height:20px;
+    }
+    button{
+        margin:10px auto;
+    }
+</style>
+<body>
+    <div class="header">歡迎光臨，請註冊登入系統</div>
+    <div class="container">
+        <h2>註冊帳號</h2>
+        <form action="/signup" method="POST">
+            <div class="form">姓名<input type="text" name="name"></div>
+            <br/>
+            <div class="form">帳號<input type="text" name="account"></div>
+            <br/>
+            <div class="form">密碼<input type="password" name="password"></div>
+            <br/>
+            <button>註冊</button>
+        </form>
+        <hr>
+        <h2>登入系統</h2>
+        <form action="/signin" method="POST">
+            <div class="form">帳號<input type="text" name="account"></div>
+            <br/>
+            <div class="form">密碼<input type="password" name="password"></div>
+            <br/>
+            <button>登入</button>
+        </form>
+    </div>
+    
+</body>
+</html>
